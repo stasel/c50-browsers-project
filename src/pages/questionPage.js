@@ -1,6 +1,7 @@
 import {
   ANSWERS_LIST_ID,
   NEXT_QUESTION_BUTTON_ID,
+  PREVIOUS_QUESTION_BUTTON_ID,
   USER_INTERFACE_ID,
 } from '../constants.js';
 import { createQuestionElement } from '../views/questionView.js';
@@ -24,13 +25,32 @@ export const initQuestionPage = () => {
     answersListElement.appendChild(answerElement);
   }
 
+
   document
     .getElementById(NEXT_QUESTION_BUTTON_ID)
     .addEventListener('click', nextQuestion);
+
+  // Добавляем обработчик для кнопки "Previous"
+  const previousButton = document.getElementById(PREVIOUS_QUESTION_BUTTON_ID);
+  if (previousButton) {
+    previousButton.addEventListener('click', previousQuestion);
+
+    // Скрываем кнопку "Previous" для первого вопроса
+    if (quizData.currentQuestionIndex === 0) {
+      previousButton.style.display = 'none';
+    } else {
+      previousButton.style.display = 'inline-block';
+    }
+  }
 };
+
 
 const nextQuestion = () => {
   quizData.currentQuestionIndex = quizData.currentQuestionIndex + 1;
-
   initQuestionPage();
+};
+
+const previousQuestion = () => {
+    quizData.currentQuestionIndex = quizData.currentQuestionIndex - 1;
+    initQuestionPage();
 };
