@@ -13,7 +13,8 @@ export const quizData = {
   currentQuestionIndex: 0,
   questions: [
     {
-      text: 'What is the correct way to define an arrow function in JavaScript?',
+      text:
+        'What is the correct way to define an arrow function in JavaScript?',
       answers: {
         a: 'let func = () => {}',
         b: 'let func = function() => {}',
@@ -25,7 +26,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Arrow functions',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions',
         },
         {
           text: 'javascript.info',
@@ -46,17 +48,18 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Equality comparisons',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness',
         },
         {
           text: 'javascript.info',
-          href:
-            'https://javascript.info/comparison',
+          href: 'https://javascript.info/comparison',
         },
       ],
     },
     {
-      text: 'Which of the following is NOT a primitive data type in JavaScript?',
+      text:
+        'Which of the following is NOT a primitive data type in JavaScript?',
       answers: {
         a: 'Object',
         b: 'String',
@@ -68,7 +71,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Data types',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values',
         },
         {
           text: 'javascript.info',
@@ -89,7 +93,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Promises',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
         },
         {
           text: 'javascript.info',
@@ -110,7 +115,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Array.prototype.map()',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map',
         },
         {
           text: 'javascript.info',
@@ -131,7 +137,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - TypeError',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError',
         },
       ],
     },
@@ -148,7 +155,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - async function',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function',
         },
         {
           text: 'javascript.info',
@@ -157,7 +165,8 @@ export const quizData = {
       ],
     },
     {
-      text: 'Which of the following methods can be used to stop the propagation of an event in JavaScript?',
+      text:
+        'Which of the following methods can be used to stop the propagation of an event in JavaScript?',
       answers: {
         a: 'event.preventDefault()',
         b: 'event.stopPropagation()',
@@ -169,7 +178,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Event propagation',
-          href: 'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_propagation',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_propagation',
         },
       ],
     },
@@ -186,7 +196,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Object.assign()',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign',
         },
         {
           text: 'javascript.info',
@@ -195,11 +206,13 @@ export const quizData = {
       ],
     },
     {
-      text: 'Which of the following is a correct way to handle an error in a Promise chain?',
+      text:
+        'Which of the following is a correct way to handle an error in a Promise chain?',
       answers: {
         a: 'promise.catch(err => console.log(err))',
         b: 'promise.finally(() => handleError())',
-        c: 'promise.then(result => handle(result)).catch(err => console.log(err))',
+        c:
+          'promise.then(result => handle(result)).catch(err => console.log(err))',
         d: 'promise.throw(err => handleError())',
       },
       correct: 'a,c',
@@ -207,7 +220,8 @@ export const quizData = {
       links: [
         {
           text: 'MDN - Promises',
-          href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
+          href:
+            'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
         },
       ],
     },
