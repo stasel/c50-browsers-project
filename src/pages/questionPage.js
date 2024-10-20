@@ -95,7 +95,22 @@ const showResultsPage = () => {
   resultElement.innerHTML = String.raw`
     <h1>Congratulations!</h1>
     <p>You scored ${userScore} out of ${totalQuestions}!</p>
+    <button id="start-over-button">Start Over</button>
   `;
 
   userInterface.appendChild(resultElement);
+
+  document
+    .getElementById('start-over-button')
+    .addEventListener('click', resetQuiz);
+};
+
+
+const resetQuiz = () => {
+  quizData.currentQuestionIndex = 0;
+  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
+
+  localStorage.removeItem('quizData');
+
+  initQuestionPage();
 };
