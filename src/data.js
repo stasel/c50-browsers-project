@@ -23,6 +23,7 @@ export const quizData = {
       },
       correct: 'a',
       selected: null,
+      multiple: false,
       links: [
         {
           text: 'MDN - Arrow functions',
@@ -45,6 +46,7 @@ export const quizData = {
       },
       correct: 'a',
       selected: null,
+      multiple: false,
       links: [
         {
           text: 'MDN - Equality comparisons',
@@ -68,6 +70,7 @@ export const quizData = {
       },
       correct: 'a',
       selected: null,
+      multiple: false,
       links: [
         {
           text: 'MDN - Data types',
@@ -90,6 +93,7 @@ export const quizData = {
       },
       correct: 'b',
       selected: null,
+      multiple: false,
       links: [
         {
           text: 'MDN - Promises',
@@ -112,6 +116,7 @@ export const quizData = {
       },
       correct: 'b',
       selected: null,
+      multiple: false,
       links: [
         {
           text: 'MDN - Array.prototype.map()',
@@ -134,6 +139,7 @@ export const quizData = {
       },
       correct: 'd',
       selected: null,
+      multiple: false,
       links: [
         {
           text: 'MDN - TypeError',
@@ -152,6 +158,7 @@ export const quizData = {
       },
       correct: 'a',
       selected: null,
+      multiple: false,
       links: [
         {
           text: 'MDN - async function',
@@ -175,6 +182,7 @@ export const quizData = {
       },
       correct: 'b,c,d',
       selected: null,
+      multiple: true,
       links: [
         {
           text: 'MDN - Event propagation',
@@ -193,6 +201,7 @@ export const quizData = {
       },
       correct: 'b,d',
       selected: null,
+      multiple: true,
       links: [
         {
           text: 'MDN - Object.assign()',
@@ -217,6 +226,7 @@ export const quizData = {
       },
       correct: 'a,c',
       selected: null,
+      multiple: true,
       links: [
         {
           text: 'MDN - Promises',

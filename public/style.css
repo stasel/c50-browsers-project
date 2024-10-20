@@ -15,18 +15,3 @@
 ul {
   list-style: none;
 }
-
-.answer-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  font-size: 16px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.answer-button:hover {
-  background-color: #e0e0e0;
-}
