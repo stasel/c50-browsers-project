@@ -118,6 +118,9 @@ const selectAnswer = (key, isMultiple) => {
 
 
 const showResultsPage = () => {
+  quizData.endTimer = new Date();
+  const quizDurationTimer = Math.round((quizData.endTimer - quizData.startTimer) / 1000);
+
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
 
@@ -145,6 +148,7 @@ const showResultsPage = () => {
   resultElement.innerHTML = String.raw`
     <h1>Congratulations!</h1>
     <p>You scored ${userScore} out of ${totalQuestions}!</p>
+     <p>You completed the quiz in ${quizDurationTimer} seconds.</p>
     <button id="start-over-button">Start Over</button>
     <button id="check-answers-button">Check Your Answers</button>
   `;
@@ -164,6 +168,9 @@ const showResultsPage = () => {
 const resetQuiz = () => {
   quizData.currentQuestionIndex = 0;
   quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
+
+  quizData.startTimer = null;
+  quizData.endTimer = null;
 
   localStorage.removeItem('quizData');
 

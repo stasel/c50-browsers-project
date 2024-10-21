@@ -11,6 +11,8 @@
 
 export const quizData = {
   currentQuestionIndex: 0,
+  startTimer: null, 
+  endTimer: null,
   questions: [
     {
       text:
