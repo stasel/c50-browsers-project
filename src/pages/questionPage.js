@@ -15,54 +15,7 @@ const loadApp = () => {
 };
 
 window.addEventListener('load', loadApp);
-/*
-export const initQuestionPage = () => {
-  const userInterface = document.getElementById(USER_INTERFACE_ID);
-  userInterface.innerHTML = '';
 
-  if (quizData.currentQuestionIndex >= quizData.questions.length) {
-    showResultsPage();
-    return;
-  }
-
-  const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
-
-  const questionElement = createQuestionElement(currentQuestion.text);
-  userInterface.appendChild(questionElement);
-
-  const answersListElement = document.getElementById(ANSWERS_LIST_ID);
-  answersListElement.innerHTML = '';
-
-  const selectedAnswers = quizData.selectedAnswers[quizData.currentQuestionIndex] || [];
-
-  for (const [key, answerText] of Object.entries(currentQuestion.answers)) {
-    const answerElement = createAnswerElement(key, answerText, currentQuestion.multiple);
-
-    if ((currentQuestion.multiple && selectedAnswers.includes(key)) || (!currentQuestion.multiple && selectedAnswers === key)) {
-      const input = answerElement.querySelector('input');
-      input.checked = true;
-    }
-
-    answerElement.querySelector('input').addEventListener('change', () => selectAnswer(key, currentQuestion.multiple));
-    answersListElement.appendChild(answerElement);
-  }
-
-  document
-    .getElementById(NEXT_QUESTION_BUTTON_ID)
-    .addEventListener('click', nextQuestion);
-
-  const previousButton = document.getElementById(PREVIOUS_QUESTION_BUTTON_ID);
-  if (previousButton) {
-    previousButton.addEventListener('click', previousQuestion);
-
-    if (quizData.currentQuestionIndex === 0) {
-      previousButton.style.display = 'none';
-    } else {
-      previousButton.style.display = 'inline-block';
-    }
-  }
-};
-*/
 export const initQuestionPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
@@ -87,18 +40,16 @@ export const initQuestionPage = () => {
     const answerElement = createAnswerElement(key, answerText, currentQuestion.multiple);
     const input = answerElement.querySelector('input');
 
-    // Восстанавливаем выбранные ответы
     if ((currentQuestion.multiple && selectedAnswers.includes(key)) || (!currentQuestion.multiple && selectedAnswers === key)) {
       input.checked = true;
     }
 
-    // Восстанавливаем состояние подсветки и блокировки
     if (answerState[key]) {
       if (answerState[key] === 'correct') {
         answerElement.style.backgroundColor = 'lightgreen';
       } else if (answerState[key] === 'incorrect') {
         answerElement.style.backgroundColor = 'lightcoral';
-        input.disabled = true; // Если был неправильный ответ, блокируем все
+        input.disabled = true;
       }
     }
 
@@ -121,7 +72,7 @@ export const initQuestionPage = () => {
     }
   }
 };
-//----------------------------
+
 const nextQuestion = () => {
   quizData.currentQuestionIndex += 1;
   initQuestionPage();
