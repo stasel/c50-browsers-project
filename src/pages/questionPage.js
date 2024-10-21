@@ -128,11 +128,13 @@ const showResultsPage = () => {
 
     if (userAnswer !== null && userAnswer.length > 0) {
       if (question.multiple) {
-        const correctAnswers = Array.isArray(question.correct) ? question.correct.sort() : [];
-        const selectedAnswers = userAnswer ? userAnswer.sort() : [];
+        const correctAnswers = question.correct.split(',').map(answer => answer.trim()).sort();
+        const selectedAnswers = Array.isArray(userAnswer) ? userAnswer.sort() : [];
 
         if (JSON.stringify(correctAnswers) === JSON.stringify(selectedAnswers)) {
           userScore += 1;
+        } else {
+          userScore += 0;
         }
       } else {
         if (userAnswer === question.correct) {
@@ -160,6 +162,7 @@ const showResultsPage = () => {
     .getElementById('check-answers-button')
     .addEventListener('click', reviewAnswers);
 };
+
 
 const resetQuiz = () => {
   quizData.currentQuestionIndex = 0;
