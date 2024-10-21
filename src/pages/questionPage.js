@@ -127,18 +127,20 @@ const showResultsPage = () => {
   quizData.questions.forEach((question, index) => {
     const userAnswer = quizData.selectedAnswers ? quizData.selectedAnswers[index] : null;
 
-    if (question.multiple) {
-      const correctAnswers = Array.isArray(question.correct) ? question.correct.sort() : [];
-      const selectedAnswers = userAnswer ? userAnswer.sort() : [];
+    if (userAnswer !== null && userAnswer.length > 0) {
+      if (question.multiple) {
+        const correctAnswers = Array.isArray(question.correct) ? question.correct.sort() : [];
+        const selectedAnswers = userAnswer ? userAnswer.sort() : [];
 
-      if (JSON.stringify(correctAnswers) === JSON.stringify(selectedAnswers)) {
-        userScore += 1;
+        if (JSON.stringify(correctAnswers) === JSON.stringify(selectedAnswers)) {
+          userScore += 1;
+        }
+      } else {
+        if (userAnswer === question.correct) {
+          userScore += 1;
+        }
       }
-    } else {
-      if (userAnswer === question.correct) {
-        userScore += 1;
-      }
-    }
+    }  
   });
 
   const resultElement = document.createElement('div');
@@ -184,7 +186,10 @@ const showReviewPage = () => {
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
   const storedQuizData = JSON.parse(localStorage.getItem('quizData'));
-  const selectedAnswers = storedQuizData.selectedAnswers[quizData.currentQuestionIndex] || [];
+  
+  const selectedAnswers = storedQuizData && storedQuizData.selectedAnswers 
+    ? storedQuizData.selectedAnswers[quizData.currentQuestionIndex] || [] 
+    : [];
 
   const questionElement = createQuestionElement(currentQuestion.text);
   userInterface.appendChild(questionElement);
