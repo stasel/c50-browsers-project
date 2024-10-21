@@ -116,7 +116,6 @@ const selectAnswer = (key, isMultiple) => {
   localStorage.setItem('quizData', JSON.stringify(quizData));
 };
 
-
 const showResultsPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
@@ -140,7 +139,7 @@ const showResultsPage = () => {
           userScore += 1;
         }
       }
-    }  
+    }
   });
 
   const resultElement = document.createElement('div');
@@ -162,7 +161,6 @@ const showResultsPage = () => {
     .addEventListener('click', reviewAnswers);
 };
 
-
 const resetQuiz = () => {
   quizData.currentQuestionIndex = 0;
   quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
@@ -172,24 +170,21 @@ const resetQuiz = () => {
   initQuestionPage();
 };
 
-
 const reviewAnswers = () => {
   quizData.currentQuestionIndex = 0;
   showReviewPage();
 };
-
 
 const showReviewPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
+  const storedQuizData = JSON.parse(localStorage.getItem('quizData')) || {};
 
-  const storedQuizData = JSON.parse(localStorage.getItem('quizData'));
-  
-  const selectedAnswers = storedQuizData && storedQuizData.selectedAnswers 
-    ? storedQuizData.selectedAnswers[quizData.currentQuestionIndex] || [] 
-    : [];
+  const selectedAnswers = storedQuizData.selectedAnswers && storedQuizData.selectedAnswers[quizData.currentQuestionIndex]
+    ? storedQuizData.selectedAnswers[quizData.currentQuestionIndex]
+    : null;
 
   const questionElement = createQuestionElement(currentQuestion.text);
   userInterface.appendChild(questionElement);
@@ -197,23 +192,22 @@ const showReviewPage = () => {
   const answersListElement = document.getElementById(ANSWERS_LIST_ID);
   answersListElement.innerHTML = '';
 
-  
   for (const [key, answerText] of Object.entries(currentQuestion.answers)) {
     const answerElement = createAnswerElement(key, answerText, currentQuestion.multiple);
     const input = answerElement.querySelector('input');
 
-    
-    if ((currentQuestion.multiple && selectedAnswers.includes(key)) || (!currentQuestion.multiple && selectedAnswers === key)) {
+    if (selectedAnswers && ((currentQuestion.multiple && selectedAnswers.includes(key)) || 
+        (!currentQuestion.multiple && selectedAnswers === key))) {
       input.checked = true;
-      input.disabled = true; 
+
+      if (currentQuestion.correct.includes(key)) {
+        answerElement.style.backgroundColor = 'lightgreen';
+      } else {
+        answerElement.style.backgroundColor = 'lightcoral';
+      }
     }
 
-    
-    if (currentQuestion.correct.includes(key)) {
-      answerElement.style.backgroundColor = 'lightgreen';
-    } else if (input.checked) {
-      answerElement.style.backgroundColor = 'lightcoral';
-    }
+    input.disabled = true;
 
     answersListElement.appendChild(answerElement);
   }
@@ -249,3 +243,4 @@ const previousReviewQuestion = () => {
     showReviewPage();
   }
 };
+
