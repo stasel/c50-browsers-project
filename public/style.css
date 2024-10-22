@@ -42,3 +42,11 @@ button.answer-button.correct {
 button.answer-button.incorrect {
   background-color: lightcoral;
 }
+
+#timer {
+  top: 60px;
+  left: 50%;
+  font-size: 2em;
+  background-color: lightyellow;
+  padding: 5px 10px; 
+}

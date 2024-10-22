@@ -7,6 +7,7 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
+import { startTimerFunction, stopTimer, getQuizDuration, resetTimer} from '../timer.js';
 
 const loadApp = () => {
   quizData.currentQuestionIndex = 0;
@@ -137,6 +138,8 @@ const selectAnswer = (key, isMultiple) => {
 };
 
 const showResultsPage = () => {
+  stopTimer();
+  const quizDuration = getQuizDuration();
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = '';
 
@@ -168,6 +171,7 @@ const showResultsPage = () => {
   resultElement.innerHTML = String.raw`
     <h1>Congratulations!</h1>
     <p>You scored ${userScore} out of ${totalQuestions}!</p>
+    <p>You completed the quiz in ${quizDuration} seconds.</p>
     <button id="start-over-button">Start Over</button>
     <button id="check-answers-button">Check Your Answers</button>
   `;
@@ -185,13 +189,30 @@ const showResultsPage = () => {
 
 const resetQuiz = () => {
   localStorage.removeItem('quizData');
-  
+
   quizData.currentQuestionIndex = 0;
   quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
   quizData.answerStates = {};
 
+  resetTimer();
+
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    timerElement.textContent = `Time: 0:00`;
+  }
+
+  startTimerFunction((elapsedTime) => {
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+      const minutes = Math.floor(elapsedTime / 60);
+      const seconds = elapsedTime % 60;
+      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+  });
+
   initQuestionPage();
 };
+
 
 const reviewAnswers = () => {
   quizData.currentQuestionIndex = 0;
