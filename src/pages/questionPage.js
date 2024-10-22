@@ -123,11 +123,13 @@ const selectAnswer = (key, isMultiple) => {
     }
 
     if (currentQuestion.correct.includes(key)) {
-      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightgreen';
-      answerState[quizData.currentQuestionIndex][key] = 'correct'; 
+      const answerButton = document.querySelector(`button[data-answer-key="${key}"]`);
+      answerButton.style.backgroundColor = 'lightgreen'; // تغيير لون الزر للأخضر
+      answerState[quizData.currentQuestionIndex][key] = 'correct';
     } else {
-      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightcoral';
-      answerState[quizData.currentQuestionIndex][key] = 'incorrect'; 
+      const answerButton = document.querySelector(`button[data-answer-key="${key}"]`);
+      answerButton.style.backgroundColor = 'lightcoral'; // تغيير لون الزر للأحمر
+      answerState[quizData.currentQuestionIndex][key] = 'incorrect';
 
       Array.from(answersListElement.querySelectorAll('input')).forEach(input => {
         input.disabled = true;
@@ -141,7 +143,7 @@ const selectAnswer = (key, isMultiple) => {
     });
 
     for (const [answerKey] of Object.entries(currentQuestion.answers)) {
-      const answerElement = document.querySelector(`input[value="${answerKey}"]`).parentNode;
+      const answerElement = document.querySelector(`button[data-answer-key="${answerKey}"]`);
 
       if (answerKey === currentQuestion.correct) {
         answerElement.style.backgroundColor = 'lightgreen';

@@ -9,7 +9,7 @@ export const createAnswerElement = (key, answerText, isMultiple) => {
   const element = document.createElement('button');
   element.classList.add('answer-button');
   element.textContent = `${key}: ${answerText}`;
-
+  element.setAttribute('data-answer-key', key);
   const inputType = isMultiple ? 'checkbox' : 'radio';
 
   element.innerHTML = String.raw`
