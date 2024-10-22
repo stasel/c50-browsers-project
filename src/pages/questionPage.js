@@ -75,33 +75,13 @@ export const initQuestionPage = () => {
 };
 
 const nextQuestion = () => {
-  stopTimer();  
-  quizData.currentQuestionIndex += 1; 
-  resetTimer();  
-  startTimerFunction((elapsedTime) => {
-    const timerElement = document.getElementById('timer');
-    if (timerElement) {
-      const minutes = Math.floor(elapsedTime / 60);
-      const seconds = elapsedTime % 60;
-      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
-  });
-  initQuestionPage(); 
-}
+  quizData.currentQuestionIndex += 1;
+  initQuestionPage();
+};
 
 const previousQuestion = () => {
-  stopTimer(); 
-  quizData.currentQuestionIndex -= 1; 
-  resetTimer(); 
-  startTimerFunction((elapsedTime) => {
-    const timerElement = document.getElementById('timer');
-    if (timerElement) {
-      const minutes = Math.floor(elapsedTime / 60);
-      const seconds = elapsedTime % 60;
-      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
-  });
-  initQuestionPage(); 
+  quizData.currentQuestionIndex -= 1;
+  initQuestionPage();
 };
 
 const selectAnswer = (key, isMultiple) => {
