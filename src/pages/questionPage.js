@@ -75,13 +75,33 @@ export const initQuestionPage = () => {
 };
 
 const nextQuestion = () => {
-  quizData.currentQuestionIndex += 1;
-  initQuestionPage();
-};
+  stopTimer(); 
+  quizData.currentQuestionIndex += 1; 
+  resetTimer(); 
+  startTimerFunction((elapsedTime) => { 
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+      const minutes = Math.floor(elapsedTime / 60);
+      const seconds = elapsedTime % 60;
+      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+  });
+  initQuestionPage(); 
+}
 
 const previousQuestion = () => {
-  quizData.currentQuestionIndex -= 1;
-  initQuestionPage();
+  stopTimer(); 
+  quizData.currentQuestionIndex -= 1; 
+  resetTimer(); 
+  startTimerFunction((elapsedTime) => {
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+      const minutes = Math.floor(elapsedTime / 60);
+      const seconds = elapsedTime % 60;
+      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+  });
+  initQuestionPage(); // Load the new question page
 };
 
 const selectAnswer = (key, isMultiple) => {
