@@ -6,12 +6,192 @@
   text-align: center;
 }
 
+.quiz-container {
+  background-color: #1c1c1e; 
+  border-radius: 10px; 
+  padding: 20px;
+  width: 350px; 
+  min-height: 500px; 
+  color: white;
+  text-align: center;
+  position: relative;
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-between; 
+}
+
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  width: 80%; 
+  background-color: #333; 
+  border-radius: 10px; 
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress {
+  height: 10px; 
+  background-color: #ffa500; 
+  width: 0; 
+  transition: width 0.3s; 
+}
+
+.progress-info {
+  font-size: 14px; 
+  color: white; 
+}
+
+.timer-container {
+  margin: 10px 0;
+  position: relative;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+}
+
+.timer-circle {
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%; 
+  border: 5px solid transparent; 
+  position: relative; 
+  overflow: hidden; 
+}
+
+.timer-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; 
+  background: conic-gradient(#ffa500 0%, transparent 0%); 
+  z-index: 0; 
+}
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px; 
+  font-weight: bold; 
+  color: white; 
+  z-index: 1; 
+}
+
+.question {
+  background-color: #2c2c2e; 
+  border-radius: 8px; 
+  padding: 15px; 
+  font-size: 18px; 
+  margin-bottom: 20px; 
+  height: 80px; 
+  overflow: auto; 
+}
+
+.options {
+  list-style: none; 
+  padding: 0; 
+  flex-grow: 1; 
+}
+
+.options li {
+  margin: 10px 0; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+
+.option-button {
+  display: flex;
+  align-items: center; 
+  background-color: #1c1c1e; 
+  color: white; 
+  border: 2px solid white; 
+  border-radius: 50px; 
+  padding: 10px 20px; 
+  cursor: pointer; 
+  width: 100%; 
+  justify-content: space-between; 
+  height: 50px; 
+}
+
+.option-button.correct {
+  border-color: green; 
+}
+
+.option-button.wrong {
+  border-color: red; 
+}
+
+.circle {
+  width: 15px;
+  height: 15px; 
+  border-radius: 50%; 
+  border: 2px solid white;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.circle.correct {
+  border-color: green; 
+  background-color: green; 
+}
+
+.circle.wrong {
+  border-color: red; 
+  background-color: red; 
+}
+
+.next-btn {
+  margin-top: 20px;
+  background-color: #ffa500; 
+  border: 2px solid #ffa500; 
+  border-radius: 50px; 
+  width: 50%; 
+  color: white; 
+  padding: 10px; 
+  cursor: pointer; 
+  align-self: center; 
+}
+
+.icon {
+  font-size: 18px; 
+  color: white;
+}
+
 .scrollable {
   height: auto;
-  max-height: 80vh;
-  overflow: auto;
+  max-height: 80vh; 
+  overflow: auto; 
 }
 
 ul {
-  list-style: none;
+  list-style: none; 
+}
+
+.correct {
+  background-color: green; 
+  color: white; 
+}
+
+.incorrect {
+  background-color: red; 
+  color: white; 
+}
+
+.option-button {
+  cursor: pointer; 
+}
+
+.option-button:disabled {
+  cursor: not-allowed; 
+  opacity: 0.6; 
 }
