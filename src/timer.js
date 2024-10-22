@@ -24,6 +24,7 @@ export const stopTimer = () => {
   if (timerInterval) {
     clearInterval(timerInterval);
     endTimer = Date.now();
+    timerInterval = null;
   }
 };
 
