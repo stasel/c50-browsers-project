@@ -35,7 +35,7 @@ export const initQuestionPage = () => {
   progressBarContainer.appendChild(progressBar);
   progressBarContainer.appendChild(progressInfo);
 
-  // إعداد المؤقت
+  
   const timerContainer = document.createElement('div');
   timerContainer.className = 'timer-container';
 
