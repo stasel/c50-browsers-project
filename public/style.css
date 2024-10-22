@@ -50,3 +50,20 @@ button.answer-button.incorrect {
   background-color: lightyellow;
   padding: 5px 10px; 
 }
+.answer-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.answer-button:hover {
+  background-color: #e0e0e0; /* تغيير لون الخلفية عند التمرير */
+}
+
+.answer-button input {
+  cursor: pointer; /* تأكيد أن الإدخال يظهر كنقطة تفاعل */
+}

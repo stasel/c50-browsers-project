@@ -24,6 +24,9 @@ export const initQuestionPage = () => {
     showResultsPage();
     return;
   }
+  const progressBarElement = createProgressBarElement();
+  userInterface.appendChild(progressBarElement);
+  updateProgressBar(quizData.currentQuestionIndex, quizData.questions.length);// Update progress
 
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex]; // Get the current question
 
@@ -321,3 +324,23 @@ const previousReviewQuestion = () => {
   }
 };
 
+const createProgressBarElement = () => {
+  const progressContainer = document.createElement('div'); 
+  progressContainer.id = 'progress-container'; 
+  const progressBar = document.createElement('progress');
+  progressBar.id = 'progress-bar';
+  progressBar.value = 0; 
+  progressBar.max = 100;  
+  progressContainer.appendChild(progressBar);
+
+  return progressContainer;  
+}
+
+
+const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar) {
+    const progressPercentage = (currentQuestionIndex / totalQuestions) * 100; 
+    progressBar.value = progressPercentage; 
+  }
+};
