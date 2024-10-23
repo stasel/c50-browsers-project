@@ -54,15 +54,3 @@ export const createAnswerElement = (key, answerText, isMultiple) => {
 
   return element;
 };
-const updateScoreDisplay = (score) => {
-  const scoreElement = document.getElementById('score-display');
-  if (scoreElement) {
-    scoreElement.textContent = `Score: ${score}`; // Update the text with the current score
-  } else {
-    // Create the score display if it doesn't exist
-    const newScoreElement = document.createElement('div');
-    newScoreElement.id = 'score-display';
-    newScoreElement.textContent = `Score: ${score}`;
-    document.getElementById(USER_INTERFACE_ID).prepend(newScoreElement); // Prepend to the user interface
-  }
-};
