@@ -13,6 +13,8 @@ import { startTimerFunction, stopTimer, getQuizDuration, resetTimer} from '../ti
 const loadApp = () => {
   quizData.currentQuestionIndex = 0; // Start from the first question
   quizData.selectedAnswers = new Array(quizData.questions.length).fill(null); // Initialize answers array
+  quizData.score = 0;
+  updateScoreDisplay(quizData.score);
   initQuestionPage(); // Initialize the first question
 };
 
@@ -28,7 +30,9 @@ export const initQuestionPage = () => {
     showResultsPage();
     return;
   }
-
+  const progressBarElement = createProgressBarElement();
+  userInterface.appendChild(progressBarElement);
+  updateProgressBar(quizData.currentQuestionIndex, quizData.questions.length);// Update progress
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex]; // Get the current question
 
   const questionElement = createQuestionElement(currentQuestion.text); // Create the question element
@@ -118,6 +122,10 @@ const selectAnswer = (key, isMultiple) => {
 
     // Highlight the answer based on correctness
     if (currentQuestion.correct.includes(key)) {
+      if (!selectedAnswers.includes(key)) { // Check if the answer was not already counted
+        quizData.score += 1; // Increase score
+      }
+      
       document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightgreen'; // Correct answer
       answerState[quizData.currentQuestionIndex][key] = 'correct'; // Save correct state
     } else {
@@ -145,6 +153,9 @@ const selectAnswer = (key, isMultiple) => {
       if (answerKey === currentQuestion.correct) {
         answerElement.style.backgroundColor = 'lightgreen'; // Correct answer
         answerState[quizData.currentQuestionIndex][answerKey] = 'correct'; // Save correct state
+        if (key === answerKey) { // Check if the selected answer is the correct one
+          quizData.score += 1; // Increase score for correct answer
+        }
       } else if (answerKey === key) {
         answerElement.style.backgroundColor = 'lightcoral'; // Incorrect selected answer
         answerState[quizData.currentQuestionIndex][answerKey] = 'incorrect'; // Save incorrect state
@@ -153,6 +164,7 @@ const selectAnswer = (key, isMultiple) => {
   }
 
   quizData.answerStates = answerState; // Save answer states
+  updateScoreDisplay(quizData.score);
   localStorage.setItem('quizData', JSON.stringify(quizData)); // Save to local storage
 };
 
@@ -315,5 +327,37 @@ const previousReviewQuestion = () => {
   quizData.currentQuestionIndex -= 1;
   if (quizData.currentQuestionIndex >= 0) {
     showReviewPage(); // Show the previous question
+  }
+};
+const createProgressBarElement = () => {
+  const progressContainer = document.createElement('div'); 
+  progressContainer.id = 'progress-container'; 
+  const progressBar = document.createElement('progress');
+  progressBar.id = 'progress-bar';
+  progressBar.value = 0; 
+  progressBar.max = 100;  
+  progressContainer.appendChild(progressBar);
+
+  return progressContainer;  
+}
+
+
+const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar) {
+    const progressPercentage = (currentQuestionIndex / totalQuestions) * 100; 
+    progressBar.value = progressPercentage; 
+  }
+};
+const updateScoreDisplay = (score) => {
+  const scoreElement = document.getElementById('score-display');
+  if (scoreElement) {
+    scoreElement.textContent = `Score: ${score}`; // Update the text with the current score
+  } else {
+    // Create the score display if it doesn't exist
+    const newScoreElement = document.createElement('div');
+    newScoreElement.id = 'score-display';
+    newScoreElement.textContent = `Score: ${score}`;
+    document.getElementById(USER_INTERFACE_ID).prepend(newScoreElement); // Prepend to the user interface
   }
 };
