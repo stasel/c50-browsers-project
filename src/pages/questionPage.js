@@ -13,6 +13,8 @@ import { startTimerFunction, stopTimer, getQuizDuration, resetTimer, hideTimer, 
 const loadApp = () => {
   quizData.currentQuestionIndex = 0; // Start from the first question
   quizData.selectedAnswers = new Array(quizData.questions.length).fill(null); // Initialize answers array
+  quizData.score = 0;
+  updateScoreDisplay(quizData.score);
   initQuestionPage(); // Initialize the first question
 };
 
@@ -30,7 +32,10 @@ export const initQuestionPage = () => {
     showResultsPage();
     return;
   }
-
+  updateScoreDisplay(quizData.score);
+  const progressBarElement = createProgressBarElement();
+  userInterface.appendChild(progressBarElement);
+  updateProgressBar(quizData.currentQuestionIndex, quizData.questions.length);// Update progress
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex]; // Get the current question
 
   const questionElement = createQuestionElement(currentQuestion.text); // Create the question element
@@ -122,6 +127,9 @@ const selectAnswer = (key, isMultiple) => {
     if (currentQuestion.correct.includes(key)) {
       document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightgreen'; // Correct answer
       answerState[quizData.currentQuestionIndex][key] = 'correct'; // Save correct state
+      if (!selectedAnswers.includes(key)) { // Check if the answer was not already counted
+        quizData.score += 1; // Increase score
+      }
     } else {
       document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightcoral'; // Incorrect answer
       answerState[quizData.currentQuestionIndex][key] = 'incorrect'; // Save incorrect state
@@ -147,6 +155,9 @@ const selectAnswer = (key, isMultiple) => {
       if (answerKey === currentQuestion.correct) {
         answerElement.style.backgroundColor = 'lightgreen'; // Correct answer
         answerState[quizData.currentQuestionIndex][answerKey] = 'correct'; // Save correct state
+        if (key === answerKey) { // Check if the selected answer is the correct one
+          quizData.score += 1; // Increase score for correct answer
+        }
       } else if (answerKey === key) {
         answerElement.style.backgroundColor = 'lightcoral'; // Incorrect selected answer
         answerState[quizData.currentQuestionIndex][answerKey] = 'incorrect'; // Save incorrect state
@@ -155,6 +166,7 @@ const selectAnswer = (key, isMultiple) => {
   }
 
   quizData.answerStates = answerState; // Save answer states
+  updateScoreDisplay(quizData.score);
   localStorage.setItem('quizData', JSON.stringify(quizData)); // Save to local storage
 };
 
@@ -321,3 +333,70 @@ const previousReviewQuestion = () => {
     showReviewPage(); // Show the previous question
   }
 };
+
+//create progress-bar
+const createProgressBarElement = () => {
+  const progressContainer = document.createElement('div'); 
+  progressContainer.id = 'progress-container'; 
+  const progressBar = document.createElement('progress');
+  progressBar.id = 'progress-bar';
+  progressBar.value = 0; 
+  progressBar.max = 100;  
+  progressContainer.appendChild(progressBar);
+
+  return progressContainer;  
+}
+
+
+const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar) {
+    const progressPercentage = (currentQuestionIndex / totalQuestions) * 100; 
+    progressBar.value = progressPercentage; 
+  }
+};
+
+const updateScoreDisplay = () => {
+  const scoreElement = document.getElementById('score-display'); // Get the score display element
+  let userScore = 0; // Initialize the variable to store the total score
+
+  // Calculate the score based on the answers
+  quizData.questions.forEach((question, index) => {
+    const userAnswer = quizData.selectedAnswers ? quizData.selectedAnswers[index] : null; // Get the user's answer for the current question
+
+    if (userAnswer !== null && userAnswer.length > 0) { // Check if the user has selected an answer
+      if (question.multiple) { // Check if the question allows multiple answers
+        const correctAnswers = question.correct.split(',').map(answer => answer.trim()).sort(); // Get and format the correct answers
+        const selectedAnswers = Array.isArray(userAnswer) ? userAnswer.sort() : []; // Sort the selected answers
+
+        // Check if all correct answers have been selected
+        const allCorrectSelected = correctAnswers.every(answer => selectedAnswers.includes(answer));
+        // Check if there are any incorrect answers selected
+        const anyIncorrectSelected = selectedAnswers.some(answer => !correctAnswers.includes(answer));
+
+        // If all correct answers are selected and there are no incorrect answers, add one point
+        if (allCorrectSelected && !anyIncorrectSelected) {
+          userScore += 1; // Add one point for the correct answers
+        }
+      } else {
+        // For single answer questions
+        if (userAnswer === question.correct) { // Check if the selected answer is correct
+          userScore += 1; // Add one point for the correct answer
+        }
+      }
+    }
+  });
+
+  // Update the score display
+  if (scoreElement) {
+    scoreElement.textContent = `Score: ${userScore}`; // Update the text with the current score
+  } else {
+    // If the score display doesn't exist, create it
+    const newScoreElement = document.createElement('div'); // Create a new div for the score
+    newScoreElement.id = 'score-display'; // Set the id for the score display
+    newScoreElement.textContent = `Score: ${userScore}`; // Set the initial text for the score
+    document.getElementById(USER_INTERFACE_ID).prepend(newScoreElement); // Prepend it to the user interface
+  }
+};
+
+// The function should be called after each update to the question page
