@@ -1,6 +1,7 @@
 import {
   ANSWERS_LIST_ID,
   NEXT_QUESTION_BUTTON_ID,
+  PREVIOUS_QUESTION_BUTTON_ID,
   USER_INTERFACE_ID,
 } from '../constants.js';
 import { createQuestionElement } from '../views/questionView.js';
@@ -24,11 +25,13 @@ export const initQuestionPage = () => {
     showResultsPage();
     return;
   }
+
   const progressBarElement = createProgressBarElement();
   userInterface.appendChild(progressBarElement);
   updateProgressBar(quizData.currentQuestionIndex, quizData.questions.length);// Update progress
 
-  const currentQuestion = quizData.questions[quizData.currentQuestionIndex]; // Get the current question
+ 
+  const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
 
   const questionElement = createQuestionElement(currentQuestion.text);
   userInterface.appendChild(questionElement);
@@ -39,7 +42,6 @@ export const initQuestionPage = () => {
   const selectedAnswers = quizData.selectedAnswers[quizData.currentQuestionIndex] || [];
   const answerState = quizData.answerStates && quizData.answerStates[quizData.currentQuestionIndex] || {};
 
-  // Loop through each answer option and render it
   for (const [key, answerText] of Object.entries(currentQuestion.answers)) {
     const answerElement = createAnswerElement(key, answerText, currentQuestion.multiple);
     const input = answerElement.querySelector('input');
@@ -61,7 +63,6 @@ export const initQuestionPage = () => {
     answersListElement.appendChild(answerElement);
   }
 
-  // Set up "Next" button to go to the next question
   document
     .getElementById(NEXT_QUESTION_BUTTON_ID)
     .addEventListener('click', nextQuestion);
@@ -78,107 +79,78 @@ export const initQuestionPage = () => {
   }
 };
 
-// Go to the next question
 const nextQuestion = () => {
-  stopTimer();  
-  quizData.currentQuestionIndex += 1; 
-  resetTimer();  
-  startTimerFunction((elapsedTime) => {
-    const timerElement = document.getElementById('timer');
-    if (timerElement) {
-      const minutes = Math.floor(elapsedTime / 60);
-      const seconds = elapsedTime % 60;
-      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
-  });
-  initQuestionPage(); 
-}
+  quizData.currentQuestionIndex += 1;
+  initQuestionPage();
+};
 
 const previousQuestion = () => {
-  stopTimer(); 
-  quizData.currentQuestionIndex -= 1; 
-  resetTimer(); 
-  startTimerFunction((elapsedTime) => {
-    const timerElement = document.getElementById('timer');
-    if (timerElement) {
-      const minutes = Math.floor(elapsedTime / 60);
-      const seconds = elapsedTime % 60;
-      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
-  });
-  initQuestionPage(); 
+  quizData.currentQuestionIndex -= 1;
+  initQuestionPage();
 };
 
 const selectAnswer = (key, isMultiple) => {
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
   const answersListElement = document.getElementById(ANSWERS_LIST_ID);
-  let answerState = quizData.answerStates || {}; // Initialize or get answer states
+  let answerState = quizData.answerStates || {}; 
 
   if (!answerState[quizData.currentQuestionIndex]) {
-    answerState[quizData.currentQuestionIndex] = {}; // Initialize answer state for the current question
+    answerState[quizData.currentQuestionIndex] = {};
   }
 
   if (isMultiple) {
     const selectedAnswers = quizData.selectedAnswers[quizData.currentQuestionIndex] || [];
 
-    // Add or remove selected answers based on the user's selection
     if (selectedAnswers.includes(key)) {
       quizData.selectedAnswers[quizData.currentQuestionIndex] = selectedAnswers.filter(answer => answer !== key);
     } else {
       quizData.selectedAnswers[quizData.currentQuestionIndex] = [...selectedAnswers, key];
     }
 
-    // Highlight the answer based on correctness
     if (currentQuestion.correct.includes(key)) {
-      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightgreen'; // Correct answer
-      answerState[quizData.currentQuestionIndex][key] = 'correct'; // Save correct state
+      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightgreen';
+      answerState[quizData.currentQuestionIndex][key] = 'correct'; 
     } else {
-      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightcoral'; // Incorrect answer
-      answerState[quizData.currentQuestionIndex][key] = 'incorrect'; // Save incorrect state
+      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightcoral';
+      answerState[quizData.currentQuestionIndex][key] = 'incorrect'; 
 
-      // Disable all inputs after selecting an incorrect answer
       Array.from(answersListElement.querySelectorAll('input')).forEach(input => {
         input.disabled = true;
       });
     }
   } else {
-    // Handle single choice questions
     quizData.selectedAnswers[quizData.currentQuestionIndex] = key;
 
-    // Disable all answer inputs after selection
     Array.from(answersListElement.querySelectorAll('input')).forEach(input => {
       input.disabled = true;
     });
 
-    // Highlight correct/incorrect answers
     for (const [answerKey] of Object.entries(currentQuestion.answers)) {
       const answerElement = document.querySelector(`input[value="${answerKey}"]`).parentNode;
 
       if (answerKey === currentQuestion.correct) {
-        answerElement.style.backgroundColor = 'lightgreen'; // Correct answer
-        answerState[quizData.currentQuestionIndex][answerKey] = 'correct'; // Save correct state
+        answerElement.style.backgroundColor = 'lightgreen';
+        answerState[quizData.currentQuestionIndex][answerKey] = 'correct'; 
       } else if (answerKey === key) {
-        answerElement.style.backgroundColor = 'lightcoral'; // Incorrect selected answer
-        answerState[quizData.currentQuestionIndex][answerKey] = 'incorrect'; // Save incorrect state
+        answerElement.style.backgroundColor = 'lightcoral';
+        answerState[quizData.currentQuestionIndex][answerKey] = 'incorrect'; 
       }
     }
   }
 
-  quizData.answerStates = answerState; // Save answer states
-  localStorage.setItem('quizData', JSON.stringify(quizData)); // Save to local storage
+  quizData.answerStates = answerState; 
+  localStorage.setItem('quizData', JSON.stringify(quizData));
 };
 
-// Show the results page
 const showResultsPage = () => {
-  stopTimer(); // Stop the quiz timer
-  const quizDuration = getQuizDuration(); // Get the quiz duration
+  stopTimer();
+  const quizDuration = getQuizDuration();
   const userInterface = document.getElementById(USER_INTERFACE_ID);
-  userInterface.innerHTML = ''; // Clear the interface
+  userInterface.innerHTML = '';
 
   const totalQuestions = quizData.questions.length;
   let userScore = 0;
 
-  // Calculate the user's score
   quizData.questions.forEach((question, index) => {
     const userAnswer = quizData.selectedAnswers ? quizData.selectedAnswers[index] : null;
 
@@ -189,6 +161,8 @@ const showResultsPage = () => {
 
         if (JSON.stringify(correctAnswers) === JSON.stringify(selectedAnswers)) {
           userScore += 1;
+        } else {
+          userScore += 0;
         }
       } else {
         if (userAnswer === question.correct) {
@@ -198,7 +172,6 @@ const showResultsPage = () => {
     }
   });
 
-  // Display the results and options to start over or review answers
   const resultElement = document.createElement('div');
   resultElement.innerHTML = String.raw`
     <h1>Congratulations!</h1>
@@ -210,33 +183,29 @@ const showResultsPage = () => {
 
   userInterface.appendChild(resultElement);
 
-  // Set up the button to restart the quiz
   document
     .getElementById('start-over-button')
     .addEventListener('click', resetQuiz);
 
-  // Set up the button to review answers
   document
     .getElementById('check-answers-button')
     .addEventListener('click', reviewAnswers);
 };
 
-// Reset the quiz and clear all saved data
 const resetQuiz = () => {
-  localStorage.removeItem('quizData'); // Clear local storage
+  localStorage.removeItem('quizData');
 
-  quizData.currentQuestionIndex = 0; // Reset the question index
-  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null); // Clear selected answers
-  quizData.answerStates = {}; // Clear answer states
+  quizData.currentQuestionIndex = 0;
+  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
+  quizData.answerStates = {};
 
-  resetTimer(); // Reset the quiz timer
+  resetTimer();
 
   const timerElement = document.getElementById('timer');
   if (timerElement) {
     timerElement.textContent = `Time: 0:00`;
   }
 
-  // Start the timer again for a new quiz
   startTimerFunction((elapsedTime) => {
     const timerElement = document.getElementById('timer');
     if (timerElement) {
@@ -246,7 +215,7 @@ const resetQuiz = () => {
     }
   });
 
-  initQuestionPage(); // Restart the quiz from the first question
+  initQuestionPage();
 };
 
 

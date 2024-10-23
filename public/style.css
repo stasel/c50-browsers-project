@@ -61,9 +61,9 @@ button.answer-button.incorrect {
 }
 
 .answer-button:hover {
-  background-color: #e0e0e0; /* تغيير لون الخلفية عند التمرير */
+  background-color: #e0e0e0; 
 }
 
 .answer-button input {
-  cursor: pointer; /* تأكيد أن الإدخال يظهر كنقطة تفاعل */
+  cursor: pointer; 
 }
