@@ -7,7 +7,7 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
-import { startTimerFunction, stopTimer, getQuizDuration, resetTimer} from '../timer.js';
+import { startTimerFunction, stopTimer, getQuizDuration, resetTimer, hideTimer, showTimer} from '../timer.js';
 
 // Loads the app when the page is first opened
 const loadApp = () => {
@@ -22,6 +22,8 @@ window.addEventListener('load', loadApp); // Set up loadApp to run when the page
 export const initQuestionPage = () => {
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = ''; // Clear the interface before rendering the new question
+
+  showTimer();
 
   // If there are no more questions, show the results page
   if (quizData.currentQuestionIndex >= quizData.questions.length) {
@@ -197,6 +199,8 @@ const showResultsPage = () => {
   `;
 
   userInterface.appendChild(resultElement);
+
+  hideTimer();
 
   // Set up the button to restart the quiz
   document

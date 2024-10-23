@@ -6,6 +6,7 @@ export const createTimerElement = () => {
   const timerDiv = document.createElement('div');
   timerDiv.id = 'timer';
   timerDiv.classList.add('centered');
+  timerDiv.style.display = 'none'; 
   document.body.appendChild(timerDiv);
 };
 
@@ -24,6 +25,7 @@ export const stopTimer = () => {
   if (timerInterval) {
     clearInterval(timerInterval);
     endTimer = Date.now();
+    timerInterval = null;
   }
 };
 
@@ -39,4 +41,18 @@ export const resetTimer = () => {
   startTimer = null;
   endTimer = null;
   timerInterval = null;
+};
+
+export const hideTimer = () => {
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    timerElement.style.display = 'none'; // Hide the timer
+  }
+};
+
+export const showTimer = () => {
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    timerElement.style.display = 'block'; // Show the timer
+  }
 };
