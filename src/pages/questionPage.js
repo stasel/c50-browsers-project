@@ -12,6 +12,8 @@ import { startTimerFunction, stopTimer, getQuizDuration, resetTimer} from '../ti
 const loadApp = () => {
   quizData.currentQuestionIndex = 0;
   quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
+  quizData.score = 0;
+  updateScoreDisplay(quizData.score);
   initQuestionPage();
 };
 
@@ -108,6 +110,9 @@ const selectAnswer = (key, isMultiple) => {
     }
 
     if (currentQuestion.correct.includes(key)) {
+      if (!selectedAnswers.includes(key)) { // Check if the answer was not already counted
+        quizData.score += 1; // Increase score
+      }
       document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightgreen';
       answerState[quizData.currentQuestionIndex][key] = 'correct'; 
     } else {
@@ -131,6 +136,9 @@ const selectAnswer = (key, isMultiple) => {
       if (answerKey === currentQuestion.correct) {
         answerElement.style.backgroundColor = 'lightgreen';
         answerState[quizData.currentQuestionIndex][answerKey] = 'correct'; 
+        if (key === answerKey) { // Check if the selected answer is the correct one
+          quizData.score += 1; // Increase score for correct answer
+        }
       } else if (answerKey === key) {
         answerElement.style.backgroundColor = 'lightcoral';
         answerState[quizData.currentQuestionIndex][answerKey] = 'incorrect'; 
@@ -139,6 +147,7 @@ const selectAnswer = (key, isMultiple) => {
   }
 
   quizData.answerStates = answerState; 
+  updateScoreDisplay(quizData.score);
   localStorage.setItem('quizData', JSON.stringify(quizData));
 };
 
@@ -311,5 +320,17 @@ const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
   if (progressBar) {
     const progressPercentage = (currentQuestionIndex / totalQuestions) * 100; 
     progressBar.value = progressPercentage; 
+  }
+};
+const updateScoreDisplay = (score) => {
+  const scoreElement = document.getElementById('score-display');
+  if (scoreElement) {
+    scoreElement.textContent = `Score: ${score}`; // Update the text with the current score
+  } else {
+    // Create the score display if it doesn't exist
+    const newScoreElement = document.createElement('div');
+    newScoreElement.id = 'score-display';
+    newScoreElement.textContent = `Score: ${score}`;
+    document.getElementById(USER_INTERFACE_ID).prepend(newScoreElement); // Prepend to the user interface
   }
 };
