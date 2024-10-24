@@ -56,3 +56,15 @@ export const showTimer = () => {
     timerElement.style.display = 'block'; // Show the timer
   }
 };
+
+window.addEventListener('beforeunload', () => {
+  const elapsedTime = getQuizDuration();
+  localStorage.setItem('timerState', elapsedTime);
+});
+
+window.addEventListener('load', () => {
+  const savedTime = localStorage.getItem('timerState');
+  if (savedTime) {
+    resetTimer(savedTime);
+  }
+});

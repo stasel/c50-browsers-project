@@ -238,6 +238,8 @@ const resetQuiz = () => {
       const minutes = Math.floor(elapsedTime / 60);
       const seconds = elapsedTime % 60;
       timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    } else {
+      console.error('Timer element not found');
     }
   });
 
@@ -340,7 +342,7 @@ const createProgressBarElement = () => {
 }
 
 
-const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
+export const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
   const progressBar = document.getElementById('progress-bar');
   if (progressBar) {
     const progressPercentage = (currentQuestionIndex / totalQuestions) * 100; 

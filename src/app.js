@@ -1,10 +1,16 @@
 import { quizData } from './data.js';
-import { initWelcomePage } from './pages/welcomePage.js';
 import { createTimerElement } from './timer.js';
+import { handleStateOnLoad, saveQuizState } from './localStorage/progressState.js';
 
 const loadApp = () => {
   createTimerElement(); 
-  initWelcomePage();
+  handleStateOnLoad();
+
+  setInterval(() => {
+    saveQuizState();
+  }, 1000);
+
 };
 
 window.addEventListener('load', loadApp);
+
