@@ -9,6 +9,7 @@ import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
 import { startTimerFunction, stopTimer, getQuizDuration, resetTimer, hideTimer, showTimer} from '../timer.js';
 
+let isReviewMode = false;
 // Loads the app when the page is first opened
 const loadApp = () => {
   quizData.currentQuestionIndex = 0; // Start from the first question
@@ -22,6 +23,7 @@ window.addEventListener('load', loadApp); // Set up loadApp to run when the page
 
 // Initialize the question page
 export const initQuestionPage = () => {
+  isReviewMode = false;
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = ''; // Clear the interface before rendering the new question
 
@@ -79,7 +81,9 @@ export const initQuestionPage = () => {
 
   // Set up "Previous" button to go to the previous question
   const previousButton = document.getElementById(PREVIOUS_QUESTION_BUTTON_ID);
-  if (previousButton) {
+  if(!isReviewMode) {
+    previousButton.style.display = 'none';
+  } else if (previousButton) {
     previousButton.addEventListener('click', previousQuestion);
 
     // Hide the "Previous" button for the first question
@@ -241,6 +245,7 @@ const resetQuiz = () => {
 
 // Review the user's answers
 const reviewAnswers = () => {
+  isReviewMode = true;
   quizData.currentQuestionIndex = 0; // Start from the first question
   showReviewPage(); // Show the review page
 };
