@@ -206,8 +206,8 @@ const showResultsPage = () => {
     <h1>Congratulations!</h1>
     <p>You scored ${userScore} out of ${totalQuestions}!</p>
     <p>You completed the quiz in ${quizDuration} seconds.</p>
-    <button id="start-over-button">Start Over</button>
     <button id="check-answers-button">Check Your Answers</button>
+    <button id="start-over-button">Start Over</button>
   `;
 
   userInterface.appendChild(resultElement);

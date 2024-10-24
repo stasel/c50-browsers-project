@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.centered p {
+  font-size: 2em;
+}
+
 .scrollable {
   height: auto;
   max-height: 80vh;
@@ -60,6 +64,7 @@ button.answer-button.incorrect {
   background-color: #f0f0f0; /* Keep button-like background */
   margin-bottom: 10px;
   transition: background-color 0.3s;
+  font-size: 1.3em;
 }
 
 /* Correct and wrong visual feedback */
@@ -109,4 +114,27 @@ input:checked + .custom-input-design {
 /* Disable pointer events after selection */
 .answer-item.disabled {
   pointer-events: none; /* Disable click events, no opacity change  ///*/
+}
+
+button {
+  display: inline-block;
+  width: 200px;
+  padding: 12px;
+  font-size: 1.1em;
+  color: white;
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px auto;
+}
+
+button:hover {
+  background-color: #357ABD;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

@@ -10,7 +10,7 @@ export const createWelcomeElement = () => {
     <h1>Welcome to the JavaScript Quiz!</h1>
     <p>You have to answer 10 questions.</p>
     <p>Some questions have multiple answers.</p>
-    <button id="${START_QUIZ_BUTTON_ID}">start quiz</button>
+    <button id="${START_QUIZ_BUTTON_ID}">Start Quiz</button>
   `;
   return element;
 };
