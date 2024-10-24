@@ -116,60 +116,46 @@ const selectAnswer = (key, isMultiple) => {
   if (isMultiple) {
     const selectedAnswers = quizData.selectedAnswers[quizData.currentQuestionIndex] || [];
 
-    // Add or remove selected answers based on the user's selection
     if (selectedAnswers.includes(key)) {
       quizData.selectedAnswers[quizData.currentQuestionIndex] = selectedAnswers.filter(answer => answer !== key);
     } else {
       quizData.selectedAnswers[quizData.currentQuestionIndex] = [...selectedAnswers, key];
     }
 
-    // Highlight the answer based on correctness
     if (currentQuestion.correct.includes(key)) {
-      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightgreen'; // Correct answer
-      answerState[quizData.currentQuestionIndex][key] = 'correct'; // Save correct state
-      if (!selectedAnswers.includes(key)) { // Check if the answer was not already counted
-        quizData.score += 1; // Increase score
-      }
+      document.querySelector(`input[value="${key}"]`).parentNode.parentNode.classList.add('correct');
+      answerState[quizData.currentQuestionIndex][key] = 'correct'; 
     } else {
-      document.querySelector(`input[value="${key}"]`).parentNode.style.backgroundColor = 'lightcoral'; // Incorrect answer
-      answerState[quizData.currentQuestionIndex][key] = 'incorrect'; // Save incorrect state
+      document.querySelector(`input[value="${key}"]`).parentNode.parentNode.classList.add('wrong');
+      answerState[quizData.currentQuestionIndex][key] = 'incorrect'; 
 
-      // Disable all inputs after selecting an incorrect answer
       Array.from(answersListElement.querySelectorAll('input')).forEach(input => {
         input.disabled = true;
       });
     }
   } else {
-    // Handle single choice questions
     quizData.selectedAnswers[quizData.currentQuestionIndex] = key;
 
-    // Disable all answer inputs after selection
     Array.from(answersListElement.querySelectorAll('input')).forEach(input => {
       input.disabled = true;
     });
 
-    // Highlight correct/incorrect answers
     for (const [answerKey] of Object.entries(currentQuestion.answers)) {
-      const answerElement = document.querySelector(`input[value="${answerKey}"]`).parentNode;
+      const answerElement = document.querySelector(`input[value="${answerKey}"]`).parentNode.parentNode;
 
       if (answerKey === currentQuestion.correct) {
-        answerElement.style.backgroundColor = 'lightgreen'; // Correct answer
-        answerState[quizData.currentQuestionIndex][answerKey] = 'correct'; // Save correct state
-        if (key === answerKey) { // Check if the selected answer is the correct one
-          quizData.score += 1; // Increase score for correct answer
-        }
+        answerElement.classList.add('correct');
+        answerState[quizData.currentQuestionIndex][answerKey] = 'correct'; 
       } else if (answerKey === key) {
-        answerElement.style.backgroundColor = 'lightcoral'; // Incorrect selected answer
-        answerState[quizData.currentQuestionIndex][answerKey] = 'incorrect'; // Save incorrect state
+        answerElement.classList.add('wrong');
+        answerState[quizData.currentQuestionIndex][answerKey] = 'incorrect'; 
       }
     }
   }
 
-  quizData.answerStates = answerState; // Save answer states
-  updateScoreDisplay(quizData.score);
-  localStorage.setItem('quizData', JSON.stringify(quizData)); // Save to local storage
+  quizData.answerStates = answerState; 
+  localStorage.setItem('quizData', JSON.stringify(quizData));
 };
-
 // Show the results page
 const showResultsPage = () => {
   stopTimer(); // Stop the quiz timer
