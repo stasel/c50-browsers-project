@@ -108,5 +108,5 @@ input:checked + .custom-input-design {
 
 /* Disable pointer events after selection */
 .answer-item.disabled {
-  pointer-events: none; /* Disable click events, no opacity change */
+  pointer-events: none; /* Disable click events, no opacity change  ///*/
 }
