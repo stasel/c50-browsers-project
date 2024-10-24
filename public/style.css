@@ -48,11 +48,13 @@ button.answer-button.incorrect {
 }
 
 #timer {
-  top: 60px;
-  left: 50%;
+  position: relative;
+  margin-top: 20px;
   font-size: 2em;
-  background-color: lightyellow;
-  padding: 5px 10px; 
+  padding: 5px 10px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 8px;
 }
 /* Style the custom answer container */
 .answer-item {
