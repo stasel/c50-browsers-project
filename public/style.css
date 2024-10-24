@@ -50,3 +50,63 @@ button.answer-button.incorrect {
   background-color: lightyellow;
   padding: 5px 10px; 
 }
+/* Style the custom answer container */
+.answer-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #f0f0f0; /* Keep button-like background */
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+}
+
+/* Correct and wrong visual feedback */
+.answer-item.correct {
+  background-color: #d4edda; /* Green for correct answer */
+}
+
+.answer-item.wrong {
+  background-color: #f8d7da; /* Red for wrong answer */
+}
+
+/* Hide the default input appearance but keep it functional */
+.custom-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none; /* Prevent interaction with the native input */
+}
+
+/* Create a custom radio/checkbox design */
+.custom-input-design {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; /* Makes the radio button circular */
+  border: 2px solid #007bff;
+  margin-right: 10px;
+  transition: background-color 0.3s, border-color 0.3s;
+  display: inline-block;
+  box-sizing: border-box; /* Ensure consistent sizing */
+}
+
+/* Checkbox should be square */
+input[type="checkbox"] + .custom-input-design {
+  border-radius: 3px; /* Square for checkbox */
+}
+
+/* When the input is checked, apply visual changes */
+input:checked + .custom-input-design {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Hover effect for feedback */
+.answer-item:hover .custom-input-design {
+  border-color: #0056b3;
+}
+
+/* Disable pointer events after selection */
+.answer-item.disabled {
+  pointer-events: none; /* Disable click events, no opacity change */
+}
