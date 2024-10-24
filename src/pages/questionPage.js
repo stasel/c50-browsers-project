@@ -164,6 +164,7 @@ const selectAnswer = (key, isMultiple) => {
 const showResultsPage = () => {
   stopTimer(); // Stop the quiz timer
   const quizDuration = getQuizDuration(); // Get the quiz duration
+  const formattedTime = formatTime(quizDuration);
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = ''; // Clear the interface
 
@@ -195,7 +196,7 @@ const showResultsPage = () => {
   resultElement.innerHTML = String.raw`
     <h1>Congratulations!</h1>
     <p>You scored ${userScore} out of ${totalQuestions}!</p>
-    <p>You completed the quiz in ${quizDuration} seconds.</p>
+    <p>You completed the quiz in ${formattedTime} minutes.</p>
     <button id="check-answers-button">Check Your Answers</button>
     <button id="start-over-button">Start Over</button>
   `;
@@ -390,4 +391,8 @@ const updateScoreDisplay = () => {
   }
 };
 
-// The function should be called after each update to the question page
+const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+};
