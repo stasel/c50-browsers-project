@@ -1,3 +1,8 @@
+body {
+  background:linear-gradient(to right, black 10%, #008000 250% ,black);
+  color: #ffffff; /* Green text color */
+  font-family: Arial, sans-serif;
+}
 .centered {
   position: fixed;
   top: 50%;
@@ -18,6 +23,58 @@
 
 ul {
   list-style: none;
+}
+.welcome-container {
+  text-align: center;
+  color: #ffffff;
+  padding: 2em;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  margin-bottom: 1em;
+  font-size: 2.5em;
+}
+
+p {
+  font-size: 1.2em;
+  margin-bottom: 2em;
+}
+
+.button-container button {
+  padding: 0.8em 1.5em;
+  margin: 0.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: #008000;
+  color: #ffffff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-container button:hover {
+  background-color: #008000;
+}
+.logo {
+  width: 300px; 
+  height: auto;
+  margin-bottom: 1em; 
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+}
+.welcome-box {
+  background-color: rgba(0, 128, 0, 0.3); /* Semi-transparent green */
+  border: 2px solid #008000;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
 }
 
 button.answer-button {
@@ -63,10 +120,11 @@ button.answer-button.incorrect {
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #f0f0f0; /* Keep button-like background */
+  background-color: #f0f0f0;
   margin-bottom: 10px;
   transition: background-color 0.3s;
-  font-size: 1.3em;
+  font-size: 1.2em;
+  color: black;
 }
 
 /* Correct and wrong visual feedback */
@@ -90,7 +148,7 @@ button.answer-button.incorrect {
   width: 20px;
   height: 20px;
   border-radius: 50%; /* Makes the radio button circular */
-  border: 2px solid #007bff;
+  border: 2px solid #008000;
   margin-right: 10px;
   transition: background-color 0.3s, border-color 0.3s;
   display: inline-block;
@@ -104,13 +162,13 @@ input[type="checkbox"] + .custom-input-design {
 
 /* When the input is checked, apply visual changes */
 input:checked + .custom-input-design {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #008000;
+  border-color: #008000;
 }
 
 /* Hover effect for feedback */
 .answer-item:hover .custom-input-design {
-  border-color: #0056b3;
+  border-color: #008000;
 }
 
 /* Disable pointer events after selection */
@@ -124,7 +182,7 @@ button {
   padding: 12px;
   font-size: 1.1em;
   color: white;
-  background-color: #4a90e2;
+  background-color: #008000;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -133,10 +191,12 @@ button {
 }
 
 button:hover {
-  background-color: #357ABD;
+  background-color: #008000;
 }
 
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+#progress-bar{
+  background-color: #008000;}
