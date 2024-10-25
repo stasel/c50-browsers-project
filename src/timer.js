@@ -44,4 +44,37 @@ export const resetTimer = () => {
 };
 
 export const hideTimer = () => {
-  const timerElement = document.getElementById
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    timerElement.style.display = 'none';
+  }
+};
+
+export const showTimer = () => {
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    timerElement.style.display = 'block';
+  }
+};
+
+export const updateTimerDisplay = (elapsedTime) => {
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+};
+
+window.addEventListener('beforeunload', () => {
+  const elapsedTime = getQuizDuration();
+  localStorage.setItem('timerState', elapsedTime);
+});
+
+window.addEventListener('load', () => {
+  const savedTime = localStorage.getItem('timerState');
+  if (savedTime) {
+    resetTimer();
+    startTimerFunction(updateTimerDisplay);
+  }
+});
