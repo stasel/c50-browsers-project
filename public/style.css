@@ -123,13 +123,13 @@ button.answer-button.incorrect {
   background-color: #f0f0f0;
   margin-bottom: 10px;
   transition: background-color 0.3s;
-  font-size: 1.3em;
+  font-size: 1.2em;
   color: black;
 }
 
 /* Correct and wrong visual feedback */
 .answer-item.correct {
-  background-color: #008000; /* Green for correct answer */
+  background-color: lightgreen; /* Green for correct answer */
 }
 
 .answer-item.wrong {
