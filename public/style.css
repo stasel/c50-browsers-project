@@ -1,6 +1,6 @@
 body {
-  background: linear-gradient(to right, #000000 75%, #003300 90%);
-  color: #008000; /* Green text color */
+  background:linear-gradient(to right, black 10%, #008000 250% ,black);
+  color: #ffffff; /* Green text color */
   font-family: Arial, sans-serif;
 }
 .centered {
@@ -120,15 +120,16 @@ button.answer-button.incorrect {
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #f0f0f0; /* Keep button-like background */
+  background-color: #f0f0f0;
   margin-bottom: 10px;
   transition: background-color 0.3s;
   font-size: 1.3em;
+  color: black;
 }
 
 /* Correct and wrong visual feedback */
 .answer-item.correct {
-  background-color: lightgreen; /* Green for correct answer */
+  background-color: #008000; /* Green for correct answer */
 }
 
 .answer-item.wrong {
