@@ -15,7 +15,7 @@ export const initWelcomePage = () => {
     .addEventListener('click', startQuiz);
 };
 
-const updateTimerDisplay = (elapsedTime) => {
+export const updateTimerDisplay = (elapsedTime) => {
   const timerElement = document.getElementById('timer');
   const minutes = Math.floor(elapsedTime / 60);
   const seconds = elapsedTime % 60;

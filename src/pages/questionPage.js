@@ -8,22 +8,48 @@ import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
 import { startTimerFunction, stopTimer, getQuizDuration, resetTimer, hideTimer, showTimer} from '../timer.js';
+import { updateTimerDisplay } from '../pages/welcomePage.js'
 
-let isReviewMode = false;
-// Loads the app when the page is first opened
 const loadApp = () => {
-  quizData.currentQuestionIndex = 0; // Start from the first question
-  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null); // Initialize answers array
+  localStorage.clear();
+  quizData.currentQuestionIndex = 0;
+  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
   quizData.score = 0;
   updateScoreDisplay(quizData.score);
-  initQuestionPage(); // Initialize the first question
+
+  const savedElapsedTime = localStorage.getItem('elapsedTime');
+  const elapsedTime = savedElapsedTime ? Number(savedElapsedTime) : 0;
+
+  startTimerFunction(updateTimerDisplay, elapsedTime); 
+  initQuestionPage(); 
 };
 
-window.addEventListener('load', loadApp); // Set up loadApp to run when the page loads
+window.addEventListener('load', loadApp);
+
+console.log('Saving data:', quizData);
+localStorage.setItem('quizData', JSON.stringify(quizData));
+console.log(localStorage.getItem('testKey')); 
+
+const saveProgress = () => {
+  console.log('Saving data:', quizData);
+
+  localStorage.setItem('quizData', JSON.stringify(quizData));
+};
+
 
 // Initialize the question page
 export const initQuestionPage = () => {
-  isReviewMode = false;
+  const savedQuizData = JSON.parse(localStorage.getItem('quizData'));
+  if (savedQuizData) {
+    quizData.currentQuestionIndex = savedQuizData.currentQuestionIndex;
+    quizData.selectedAnswers = savedQuizData.selectedAnswers;
+    quizData.answerStates = savedQuizData.answerStates;
+    quizData.score = savedQuizData.score;
+  } else {
+    quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
+  }
+
+  let isReviewMode = false;
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = ''; // Clear the interface before rendering the new question
 
@@ -98,12 +124,14 @@ export const initQuestionPage = () => {
 // Go to the next question
 const nextQuestion = () => {
   quizData.currentQuestionIndex += 1; // Move to the next question
+  saveProgress(); 
   initQuestionPage(); // Re-initialize the question page
 };
 
 // Go to the previous question
 const previousQuestion = () => {
   quizData.currentQuestionIndex -= 1; // Move to the previous question
+  saveProgress(); 
   initQuestionPage(); // Re-initialize the question page
 };
 
@@ -160,6 +188,7 @@ const selectAnswer = (key, isMultiple) => {
   quizData.answerStates = answerState; 
   localStorage.setItem('quizData', JSON.stringify(quizData));
 };
+
 // Show the results page
 const showResultsPage = () => {
   stopTimer(); // Stop the quiz timer
@@ -218,20 +247,13 @@ const showResultsPage = () => {
 
 // Reset the quiz and clear all saved data
 const resetQuiz = () => {
-  localStorage.removeItem('quizData'); // Clear local storage
+  localStorage.clear();
+  quizData.currentQuestionIndex = 0;
+  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null);
+  quizData.answerStates = {};
 
-  quizData.currentQuestionIndex = 0; // Reset the question index
-  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null); // Clear selected answers
-  quizData.answerStates = {}; // Clear answer states
+  resetTimer();
 
-  resetTimer(); // Reset the quiz timer
-
-  const timerElement = document.getElementById('timer');
-  if (timerElement) {
-    timerElement.textContent = `Time: 0:00`;
-  }
-
-  // Start the timer again for a new quiz
   startTimerFunction((elapsedTime) => {
     const timerElement = document.getElementById('timer');
     if (timerElement) {
@@ -241,7 +263,7 @@ const resetQuiz = () => {
     }
   });
 
-  initQuestionPage(); // Restart the quiz from the first question
+  initQuestionPage();
 };
 
 // Review the user's answers
@@ -396,3 +418,12 @@ const formatTime = (seconds) => {
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 };
+
+window.addEventListener('beforeunload', () => {
+  saveProgress(); // Save quiz progress
+  if (startTimer) {
+    const elapsedTime = Math.floor((Date.now() - startTimer) / 1000);
+    localStorage.setItem('elapsedTime', elapsedTime); // Save timer progress
+    console.log(localStorage.getItem('testKey')); 
+  }
+});

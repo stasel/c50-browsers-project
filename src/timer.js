@@ -10,15 +10,16 @@ export const createTimerElement = () => {
   document.body.appendChild(timerDiv);
 };
 
-export const startTimerFunction = (updateCallback) => {
-  if (!startTimer) {
-    startTimer = Date.now();
+export const startTimerFunction = (updateCallback, elapsedTime = 0) => {
+  startTimer = Date.now() - elapsedTime * 1000;  // Offset by elapsed time
+  timerInterval = setInterval(() => {
+    const currentElapsedTime = Math.floor((Date.now() - startTimer) / 1000);
+    updateCallback(currentElapsedTime);
+  }, 1000);
+};
 
-    timerInterval = setInterval(() => {
-      const elapsedTime = Math.floor((Date.now() - startTimer) / 1000);
-      updateCallback(elapsedTime);
-    }, 1000);
-  }
+export const resumeTimerFunction = (elapsedTime, updateCallback) => {
+  startTimerFunction(updateCallback, elapsedTime);
 };
 
 export const stopTimer = () => {
@@ -41,6 +42,7 @@ export const resetTimer = () => {
   startTimer = null;
   endTimer = null;
   timerInterval = null;
+  localStorage.removeItem('elapsedTime');  // Clear saved time if stored
 };
 
 export const hideTimer = () => {
