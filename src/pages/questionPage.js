@@ -7,39 +7,36 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
-import { startTimerFunction, stopTimer, getQuizDuration, resetTimer, hideTimer, showTimer} from '../timer.js';
+import { 
+  startTimerFunction, 
+  stopTimer, 
+  getQuizDuration, 
+  resetTimer, 
+  hideTimer, 
+  showTimer,
+  createTimerElement,
+  updateTimerDisplay 
+} from '../timer.js';
 
 let isReviewMode = false;
-// Loads the app when the page is first opened
-const loadApp = () => {
-  quizData.currentQuestionIndex = 0; // Start from the first question
-  quizData.selectedAnswers = new Array(quizData.questions.length).fill(null); // Initialize answers array
-  quizData.score = 0;
-  updateScoreDisplay(quizData.score);
-  initQuestionPage(); // Initialize the first question
-};
-
-window.addEventListener('load', loadApp); // Set up loadApp to run when the page loads
 
 // Initialize the question page
 export const initQuestionPage = () => {
-  isReviewMode = false;
   const userInterface = document.getElementById(USER_INTERFACE_ID);
   userInterface.innerHTML = ''; // Clear the interface before rendering the new question
 
-  showTimer();
+ // Check if there are more questions
+ if (quizData.currentQuestionIndex >= quizData.questions.length) {
+  showResultsPage(); // Show results if no more questions
+  return; // Exit function
+}
 
-  // If there are no more questions, show the results page
-  if (quizData.currentQuestionIndex >= quizData.questions.length) {
-    showResultsPage();
-    return;
-  }
   updateScoreDisplay(quizData.score);
   const progressBarElement = createProgressBarElement();
   userInterface.appendChild(progressBarElement);
   updateProgressBar(quizData.currentQuestionIndex, quizData.questions.length);// Update progress
+  
   const currentQuestion = quizData.questions[quizData.currentQuestionIndex]; // Get the current question
-
   const questionElement = createQuestionElement(currentQuestion.text); // Create the question element
   userInterface.appendChild(questionElement); // Append the question element to the page
 
@@ -225,22 +222,12 @@ const resetQuiz = () => {
   quizData.answerStates = {}; // Clear answer states
 
   resetTimer(); // Reset the quiz timer
-
-  const timerElement = document.getElementById('timer');
-  if (timerElement) {
-    timerElement.textContent = `Time: 0:00`;
-  }
+  showTimer(); // Show the timer
+  updateTimerDisplay(0); // Reset timer display to 0
 
   // Start the timer again for a new quiz
   startTimerFunction((elapsedTime) => {
-    const timerElement = document.getElementById('timer');
-    if (timerElement) {
-      const minutes = Math.floor(elapsedTime / 60);
-      const seconds = elapsedTime % 60;
-      timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    } else {
-      console.error('Timer element not found');
-    }
+    updateTimerDisplay(elapsedTime); // Update the timer display with elapsed time
   });
 
   initQuestionPage(); // Restart the quiz from the first question
@@ -341,7 +328,6 @@ const createProgressBarElement = () => {
   return progressContainer;  
 }
 
-
 export const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
   const progressBar = document.getElementById('progress-bar');
   if (progressBar) {
@@ -350,7 +336,7 @@ export const updateProgressBar = (currentQuestionIndex, totalQuestions) => {
   }
 };
 
-const updateScoreDisplay = () => {
+export const updateScoreDisplay = () => {
   const scoreElement = document.getElementById('score-display'); // Get the score display element
   let userScore = 0; // Initialize the variable to store the total score
 

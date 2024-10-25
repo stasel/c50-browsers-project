@@ -1,16 +1,16 @@
-let startTimer = null;
-let endTimer = null;
-let timerInterval = null;
+export let startTimer = null;
+export let endTimer = null;
+export let timerInterval = null;
 
 export const createTimerElement = () => {
   const timerDiv = document.createElement('div');
   timerDiv.id = 'timer';
   timerDiv.classList.add('centered');
-  timerDiv.style.display = 'none'; 
+  timerDiv.style.display = 'block';
   document.body.appendChild(timerDiv);
 };
 
-export const startTimerFunction = (updateCallback) => {
+export let startTimerFunction = (updateCallback) => {
   if (!startTimer) {
     startTimer = Date.now();
 
@@ -37,34 +37,11 @@ export const getQuizDuration = () => {
 };
 
 export const resetTimer = () => {
-  clearInterval(timerInterval);
+  stopTimer();
   startTimer = null;
   endTimer = null;
   timerInterval = null;
 };
 
 export const hideTimer = () => {
-  const timerElement = document.getElementById('timer');
-  if (timerElement) {
-    timerElement.style.display = 'none'; // Hide the timer
-  }
-};
-
-export const showTimer = () => {
-  const timerElement = document.getElementById('timer');
-  if (timerElement) {
-    timerElement.style.display = 'block'; // Show the timer
-  }
-};
-
-window.addEventListener('beforeunload', () => {
-  const elapsedTime = getQuizDuration();
-  localStorage.setItem('timerState', elapsedTime);
-});
-
-window.addEventListener('load', () => {
-  const savedTime = localStorage.getItem('timerState');
-  if (savedTime) {
-    resetTimer(savedTime);
-  }
-});
+  const timerElement = document.getElementById
