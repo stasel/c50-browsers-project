@@ -10,9 +10,13 @@ export const createTimerElement = () => {
   document.body.appendChild(timerDiv);
 };
 
-export let startTimerFunction = (updateCallback) => {
+export let startTimerFunction = (updateCallback, elapsedTime = 0) => {
   if (!startTimer) {
-    startTimer = Date.now();
+    if (elapsedTime > 0) {
+      startTimer = Date.now() - (elapsedTime * 1000);
+    } else {
+      startTimer = Date.now();
+    }
 
     timerInterval = setInterval(() => {
       const elapsedTime = Math.floor((Date.now() - startTimer) / 1000);
@@ -32,6 +36,8 @@ export const stopTimer = () => {
 export const getQuizDuration = () => {
   if (startTimer && endTimer) {
     return Math.round((endTimer - startTimer) / 1000);
+  } else if (startTimer) {
+    return Math.round((Date.now() - startTimer) / 1000);
   }
   return 0;
 };
@@ -68,13 +74,14 @@ export const updateTimerDisplay = (elapsedTime) => {
 
 window.addEventListener('beforeunload', () => {
   const elapsedTime = getQuizDuration();
-  localStorage.setItem('timerState', elapsedTime);
+  window.localStorage.setItem('timerState', elapsedTime);
 });
 
 window.addEventListener('load', () => {
   const savedTime = localStorage.getItem('timerState');
-  if (savedTime) {
+  if (!savedTime) {
     resetTimer();
     startTimerFunction(updateTimerDisplay);
   }
+  startTimerFunction(updateTimerDisplay, savedTime);
 });

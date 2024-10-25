@@ -1,6 +1,6 @@
 import { NEXT_QUESTION_BUTTON_ID } from '../constants.js';
 import { quizData } from '../data.js';
-import { getQuizDuration, resetTimer, startTimerFunction } from '../timer.js';
+import { getQuizDuration, resetTimer, startTimerFunction, updateTimerDisplay } from '../timer.js';
 import { initQuestionPage } from '../pages/questionPage.js';
 import { initWelcomePage } from '../pages/welcomePage.js';
 
@@ -33,20 +33,22 @@ export const handleStateOnLoad = () => {
   const stateLoaded = loadQuizState();
 
   if (stateLoaded) {
-    const savedTimerState = quizData.timerState || 0; 
+    const savedTimerState = window.localStorage.timerState || 0; 
     let adjustedStartTimer = Date.now() - (savedTimerState * 1000); 
 
-    startTimerFunction((elapsedTime) => {
-      const totalElapsedTime = savedTimerState + elapsedTime;
+    startTimerFunction(updateTimerDisplay, savedTimerState);
+    // startTimerFunction((null, savedTimerState) => {
+    //   console.log(`savedTimerState2: ${savedTimerState}`);
+    //   const totalElapsedTime = savedTimerState + elapsedTime;
 
-      const minutes = Math.floor(totalElapsedTime / 60);
-      const seconds = totalElapsedTime % 60;
+    //   const minutes = Math.floor(totalElapsedTime / 60);
+    //   const seconds = totalElapsedTime % 60;
 
-      const timerElement = document.getElementById('timer');
-      if (timerElement) {
-        timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      }
-    });
+    //   const timerElement = document.getElementById('timer');
+    //   if (timerElement) {
+    //     timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    //   }
+    // });
 
     initQuestionPage();
   } else {
