@@ -1,60 +1,82 @@
-let startTimer = null;
-let endTimer = null;
-let timerInterval = null;
+export let startTimer = null;
+export let timerInterval = null;
 
 export const createTimerElement = () => {
   const timerDiv = document.createElement('div');
   timerDiv.id = 'timer';
   timerDiv.classList.add('centered');
-  timerDiv.style.display = 'none'; 
   document.body.appendChild(timerDiv);
 };
 
 export const startTimerFunction = (updateCallback, elapsedTime = 0) => {
-  startTimer = Date.now() - elapsedTime * 1000;  // Offset by elapsed time
+  startTimer = Date.now() - elapsedTime * 1000;
+
   timerInterval = setInterval(() => {
     const currentElapsedTime = Math.floor((Date.now() - startTimer) / 1000);
     updateCallback(currentElapsedTime);
   }, 1000);
 };
 
-export const resumeTimerFunction = (elapsedTime, updateCallback) => {
-  startTimerFunction(updateCallback, elapsedTime);
-};
-
 export const stopTimer = () => {
   if (timerInterval) {
     clearInterval(timerInterval);
-    endTimer = Date.now();
     timerInterval = null;
   }
 };
 
 export const getQuizDuration = () => {
-  if (startTimer && endTimer) {
-    return Math.round((endTimer - startTimer) / 1000);
+  if (startTimer) {
+    return Math.floor((Date.now() - startTimer) / 1000);
   }
   return 0;
 };
 
 export const resetTimer = () => {
-  clearInterval(timerInterval);
+  stopTimer();
   startTimer = null;
-  endTimer = null;
-  timerInterval = null;
-  localStorage.removeItem('elapsedTime');  // Clear saved time if stored
 };
 
 export const hideTimer = () => {
   const timerElement = document.getElementById('timer');
   if (timerElement) {
-    timerElement.style.display = 'none'; // Hide the timer
+    timerElement.style.display = 'none';
   }
 };
 
 export const showTimer = () => {
   const timerElement = document.getElementById('timer');
   if (timerElement) {
-    timerElement.style.display = 'block'; // Show the timer
+    timerElement.style.display = 'block';
   }
+};
+
+export const updateTimerDisplay = (elapsedTime) => {
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+  const timerElement = document.getElementById('timer');
+  if (timerElement) {
+    timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+};
+
+window.addEventListener('load', () => {
+  const savedTime = parseInt(localStorage.getItem('elapsedTime'), 10);
+  if (!isNaN(savedTime) && savedTime >= 0) {
+    startTimerFunction(updateTimerDisplay, savedTime);
+  } else {
+    resetTimer();
+    startTimerFunction(updateTimerDisplay);
+  }
+});
+
+export const resumeTimerFunction = (elapsedTime, updateCallback) => {
+  stopTimer();
+
+  startTimer = Date.now() - (elapsedTime * 1000);
+  timerInterval = setInterval(() => {
+    const currentElapsedTime = Math.floor((Date.now() - startTimer) / 1000);
+    updateCallback(currentElapsedTime);
+  }, 1000);
+
+  updateCallback(elapsedTime);
 };
