@@ -51,13 +51,14 @@ export const showTimer = () => {
 };
 
 export const updateTimerDisplay = (elapsedTime) => {
-  const minutes = Math.floor(elapsedTime / 60);
-  const seconds = elapsedTime % 60;
   const timerElement = document.getElementById('timer');
   if (timerElement) {
+    const minutes = Math.floor(elapsedTime / 60);
+    const seconds = elapsedTime % 60;
     timerElement.textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 };
+
 
 window.addEventListener('load', () => {
   const savedTime = parseInt(localStorage.getItem('elapsedTime'), 10);

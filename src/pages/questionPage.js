@@ -7,7 +7,7 @@ import {
 import { createQuestionElement } from '../views/questionView.js';
 import { createAnswerElement } from '../views/answerView.js';
 import { quizData } from '../data.js';
-import { getQuizDuration, startTimerFunction, stopTimer, resetTimer, hideTimer, showTimer} from '../timer.js';
+import { getQuizDuration, startTimerFunction, stopTimer, resetTimer, hideTimer, showTimer, updateTimerDisplay} from '../timer.js';
 import { saveProgress } from '../quizProgress.js';
 import { initWelcomePage } from './welcomePage.js';  
 
